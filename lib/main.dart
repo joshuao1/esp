@@ -1,30 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:language_app/data/history_dao.dart';
-import 'package:language_app/notifier/character_notifier.dart';
-import 'package:language_app/notifier/history_notifier.dart';
-import 'package:language_app/widget/home_page.dart';
+import 'package:Esp/notifier/vocab_notifier.dart';
+import 'package:Esp/widget/home_page.dart';
 import 'package:provider/provider.dart';
 
-import 'package:language_app/data/app_database.dart';
-import 'package:language_app/data/character_dao.dart';
+import 'package:Esp/data/app_database.dart';
+import 'package:Esp/data/vocab_dao.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final database = await AppDatabase.instance.database;
-  final characterDao = CharacterDao(database);
-  final historyDao = HistoryDao(database);
+  final vocabDao = VocabDao(database);
   runApp(
     MultiProvider(
       providers: [
-        Provider(create: (context) => characterDao),
-        Provider(create: (context) => historyDao),
+        Provider(create: (context) => vocabDao),
         ChangeNotifierProvider(
-          create: (context) =>
-              CharacterNotifier(context.read<CharacterDao>())..load(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) =>
-              HistoryNotifier(context.read<HistoryDao>())..load(),
+          create: (context) => VocabNotifier(context.read<VocabDao>())..load(),
         ),
       ],
       child: MyApp(),
@@ -39,7 +30,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Character Trainer',
+      title: 'Vocab Trainer',
       theme: ThemeData(
         brightness: Brightness.dark,
         scaffoldBackgroundColor: const Color(0xFF0D0D1A),
@@ -116,7 +107,7 @@ class MyApp extends StatelessWidget {
       routes: {'/': (context) => HomePage()},
       initialRoute: '/',
       // home: HomePage(),
-      // CharacterList(),
+      // VocabList(),
     );
   }
 }

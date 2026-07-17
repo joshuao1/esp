@@ -1,0 +1,76 @@
+# Miscellaneous
+*.class
+*.lock
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+
+# IntelliJ
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# Visual Studio Code
+.vscode/
+
+# Flutter/Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+
+# Android
+android/key.properties
+android/local.properties
+android/.gradle
+android/app/build
+
+# iOS
+ios/Pods/
+ios/Runner/GeneratedPluginRegistrant.*
+ios/Flutter/App.framework
+ios/Flutter/ephemeral
+ios/Flutter/Generated.xcconfig
+ios/Flutter/flutter_assets.stamp
+ios/Flutter/flutter_build_libs_for_embedding.stamp
+ios/.symlinks
+ios/Runner.xcworkspace/
+ios/Runner.xcodeproj/project.xcworkspace/
+ios/Runner.xcodeproj/xcshareddata/
+ios/podfile.lock
+
+# Linux
+linux/flutter/ephemeral
+linux/flutter/generated_config.cmake
+linux/flutter/generated_plugins.cmake
+
+# macOS
+macos/Flutter/ephemeral
+macos/Flutter/Generated.xcconfig
+macos/Flutter/GeneratedPluginRegistrant.swift
+macos/Runner.xcworkspace
+macos/.symlinks
+
+# Windows
+windows/flutter/ephemeral
+windows/flutter/generated_config.cmake
+windows/flutter/generated_plugins.cmake
+
+# Web
+.dart_tool/build/
+
+# SQLite local databases
+*.db
+*.db-journal
+*.db-wal
+*.sqlite

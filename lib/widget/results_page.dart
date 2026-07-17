@@ -1,16 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:language_app/model/character_model.dart';
-import 'package:language_app/model/character_session.dart';
-import 'package:language_app/widget/styled_container.dart';
+import 'package:Esp/model/vocab_model.dart';
+import 'package:Esp/model/trainer_session_model.dart';
+import 'package:Esp/widget/styled_container.dart';
 
 class ResultsPage extends StatelessWidget {
-  final CharacterSession sessionData;
+  final VocabSession sessionData;
   const ResultsPage({super.key, required this.sessionData});
 
   @override
   Widget build(BuildContext context) {
-    List<Character> wrongCharacters = sessionData.content
+    List<Vocab> wrongVocabs = sessionData.content
         .where((char) => sessionData.errors.contains(char.id))
         .toList();
     print("Errors ${sessionData.errors}");
@@ -32,9 +32,7 @@ class ResultsPage extends StatelessWidget {
                   color: Colors.white,
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  shadows: [
-                    Shadow(color: Color(0xFF00FFCC), blurRadius: 10),
-                  ],
+                  shadows: [Shadow(color: Color(0xFF00FFCC), blurRadius: 10)],
                 ),
               ),
               const SizedBox(height: 8),
@@ -49,34 +47,35 @@ class ResultsPage extends StatelessWidget {
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: Color(0xFFFF00FF),
-                  shadows: [
-                    Shadow(color: Color(0xFFFF00FF), blurRadius: 8),
-                  ],
+                  shadows: [Shadow(color: Color(0xFFFF00FF), blurRadius: 8)],
                 ),
               ),
               const SizedBox(height: 12),
               Expanded(
                 child: ListView.builder(
-                  itemCount: wrongCharacters.length,
+                  itemCount: wrongVocabs.length,
                   itemBuilder: (context, index) {
-                    Character wrongCharacter = wrongCharacters[index];
+                    Vocab wrongVocab = wrongVocabs[index];
                     return StyledContainer(
                       child: Column(
                         children: [
                           Text(
-                            wrongCharacter.character,
+                            wrongVocab.phrase,
                             style: const TextStyle(
                               fontSize: 32,
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                               shadows: [
-                                Shadow(color: Color(0xFFFF00FF), blurRadius: 10),
+                                Shadow(
+                                  color: Color(0xFFFF00FF),
+                                  blurRadius: 10,
+                                ),
                               ],
                             ),
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            wrongCharacter.translation,
+                            wrongVocab.translation,
                             style: const TextStyle(
                               color: Color(0xFF00FFCC),
                               fontWeight: FontWeight.w500,

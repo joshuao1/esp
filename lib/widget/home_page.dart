@@ -1,12 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:language_app/data/character_dao.dart';
-import 'package:language_app/notifier/character_trainer_notifier.dart';
-import 'package:language_app/notifier/history_notifier.dart';
-import 'package:language_app/widget/character_list_page.dart';
-import 'package:language_app/widget/character_select_page.dart';
-import 'package:language_app/widget/character_train_page.dart';
-import 'package:language_app/notifier/character_notifier.dart';
+import 'package:Esp/data/vocab_dao.dart';
+import 'package:Esp/notifier/vocab_trainer_notifier.dart';
+import 'package:Esp/widget/vocab_list_page.dart';
+import 'package:Esp/widget/vocab_train_page.dart';
+import 'package:Esp/notifier/vocab_notifier.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
@@ -14,45 +12,17 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final selectedGroups = [
-      'za',
-      'ya',
-      'wa',
-      'ta',
-      'sha',
-      'sa',
-      'rya',
-      'ra',
-      'pya',
-      'pa',
-      'nya',
-      'na',
-      'mya',
-      'ma',
-      'kya',
-      'ka',
-      'ja',
-      'hya',
-      'ha',
-      'gya',
-      'ga',
-      'da',
-      'cha',
-      'bya',
-      'ba',
-      'a',
-    ];
-    final characterNotifier = context.watch<CharacterNotifier>();
-    final allCharacters = characterNotifier.characters;
+    final vocabNotifier = context.watch<VocabNotifier>();
+    final allVocabs = vocabNotifier.vocabs;
     final now = DateTime.now();
-    final dueCharacters = allCharacters.where(
+    final dueVocabs = allVocabs.where(
       (char) => char.nextTrainDate != null && now.isAfter(char.nextTrainDate!),
     );
-    final newCharacters = allCharacters
+    final newVocabs = allVocabs
         .where((char) => char.lastTrainDate == null)
         .take(10);
-    final trainingCharacters = {...dueCharacters, ...newCharacters}.toList();
-    final errorCharacters = allCharacters
+    final trainingVocabs = {...dueVocabs, ...newVocabs}.toList();
+    final errorVocabs = allVocabs
         .where(
           (char) =>
               char.lastErrorDate != null &&
@@ -60,11 +30,11 @@ class HomePage extends StatelessWidget {
         )
         .toList();
     // final historyNotifier = context.watch<HistoryNotifier>();
-    // final characterErrors = historyNotifier.histories
+    // final vocabErrors = historyNotifier.histories
     //     .where((element) => !element.correct)
     //     .toList();
-    // characterErrors.sort((a, b) => a.date.compareTo(b.date));
-    // characterErrors.map((element) => element.characterFk);
+    // vocabErrors.sort((a, b) => a.date.compareTo(b.date));
+    // vocabErrors.map((element) => element.vocabFk);
     return Scaffold(
       appBar: AppBar(title: Text("Home")),
       body: SafeArea(
@@ -77,77 +47,72 @@ class HomePage extends StatelessWidget {
               ElevatedButton(
                 onPressed: () => Navigator.push(
                   context,
-                  CupertinoPageRoute(builder: (context) => CharacterListPage()),
+                  CupertinoPageRoute(builder: (context) => VocabListPage()),
                 ),
-                child: Text("Character List"),
+                child: Text("Vocab List"),
               ),
               ElevatedButton(
                 onPressed: () => Navigator.push(
                   context,
                   CupertinoPageRoute(
                     builder: (context) => ChangeNotifierProvider(
-                      create: (context) => CharacterTrainerNotifier(
-                        characters: characterNotifier.characters
-                            .where(
-                              (char) =>
-                                  selectedGroups.contains(char.characterGroup),
-                            )
-                            .toList(),
-                        characterDao: context.read<CharacterDao>(),
+                      create: (context) => VocabTrainerNotifier(
+                        vocabs: vocabNotifier.vocabs,
+                        vocabDao: context.read<VocabDao>(),
                       ),
-                      child: CharacterTrainerPage(),
+                      child: VocabTrainerPage(),
                     ),
                   ),
                 ),
-                child: Text("Character Trainer"),
+                child: Text("Vocab Trainer"),
               ),
+              // ElevatedButton(
+              //   onPressed: () => Navigator.push(
+              //     context,
+              //     CupertinoPageRoute(
+              //       builder: (context) => VocabSelectPage(),
+              //     ),
+              //   ),
+              //   child: Text("Select Vocabs"),
+              // ),
               ElevatedButton(
-                onPressed: () => Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                    builder: (context) => CharacterSelectPage(),
-                  ),
-                ),
-                child: Text("Select Characters"),
-              ),
-              ElevatedButton(
-                onPressed: () => errorCharacters.isEmpty
+                onPressed: () => errorVocabs.isEmpty
                     ? null
                     : Navigator.push(
                         context,
                         CupertinoPageRoute(
                           builder: (context) => ChangeNotifierProvider(
-                            create: (context) => CharacterTrainerNotifier(
-                              characters: errorCharacters,
-                              characterDao: context.read<CharacterDao>(),
+                            create: (context) => VocabTrainerNotifier(
+                              vocabs: errorVocabs,
+                              vocabDao: context.read<VocabDao>(),
                             ),
-                            child: CharacterTrainerPage(),
+                            child: VocabTrainerPage(),
                           ),
                         ),
                       ),
                 child: Text(
-                  errorCharacters.isEmpty ? "No Errors" : "Practice Errors",
+                  errorVocabs.isEmpty ? "No Errors" : "Practice Errors",
                 ),
               ),
               ElevatedButton(
                 onPressed: () {
-                  trainingCharacters.isEmpty
+                  trainingVocabs.isEmpty
                       ? null
                       : Navigator.push(
                           context,
                           CupertinoPageRoute(
                             builder: (context) => ChangeNotifierProvider(
-                              create: (context) => CharacterTrainerNotifier(
-                                characters: trainingCharacters,
-                                characterDao: context.read<CharacterDao>(),
+                              create: (context) => VocabTrainerNotifier(
+                                vocabs: trainingVocabs,
+                                vocabDao: context.read<VocabDao>(),
                               ),
-                              child: CharacterTrainerPage(),
+                              child: VocabTrainerPage(),
                             ),
                           ),
                         );
                 },
                 child: Text(
-                  trainingCharacters.isEmpty
+                  trainingVocabs.isEmpty
                       ? "Training Complete"
                       : "Spaced Repetition Training",
                 ),
